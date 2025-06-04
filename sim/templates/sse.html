@@ -15,15 +15,14 @@
     const sseData=document.getElementById('sse-data')
     const startSSE=()=>{
         eventSource=new EventSource("/stream-data/");
-        eventSource.onmessage(
-            (event)=>{
-                (sseData.innerHTML += `<p>${event.data}</p>`)
+        eventSource.onmessage=
+            (event)=> {
+                sseData.innerHTML += `<p>${event.data}</p>`;
                 document.querySelector('button[onclick="startSSE()"]').disabled = true;
-                document.querySelector('button[onclick="stopSSE()"]').disabled = false
+
+                document.querySelector('button[onclick="stopSSE()"]').disabled = false;
 
             }
-
-        )
     }
     const stopSSE=()=>{
     if (eventSource) {
