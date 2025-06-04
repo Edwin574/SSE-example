@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE</title>
+</head>
+<body>
+<h1>Server Sent Events</h1>
+<div id="sse-data"></div>
+<button onclick="startSSE()">Start Streaming</button>
+<button onclick="stopSSE()">Stop Streaming</button>
+
+<script>
+    let eventSource
+    const sseData=document.getElementById('sse-data')
+    const startSSE=()=>{
+        eventSource=new EventSource("/stream-data/");
+        eventSource.onmessage(
+            (event)=>{
+                (sseData.innerHTML += `<p>${event.data}</p>`)
+                document.querySelector('button[onclick="startSSE()"]').disabled = true;
+                document.querySelector('button[onclick="stopSSE()"]').disabled = false
+
+            }
+
+        )
+    }
+    const stopSSE=()=>{
+    if (eventSource) {
+        eventSource.close();
+        eventSource = null;
+        document.querySelector('button[onclick="startSSE()"]').disabled = false;
+        document.querySelector('button[onclick="stopSSE()"]').disabled = true;
+    }}
+</script>
+</body>
+</html>
